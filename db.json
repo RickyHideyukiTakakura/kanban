@@ -1,0 +1,63 @@
+{
+  "cards": [
+    {
+      "id": "1",
+      "title": "Fazer um kanban",
+      "description": "O objetivo principal do projeto é fazer um kanban",
+      "status": "do",
+      "tags": [
+        {
+          "name": "kanban"
+        },
+        {
+          "name": "Main"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Configurar o projeto",
+      "description": "O objetivo é configurar o projeto para usar react, typescript e tailwindcss",
+      "status": "doing",
+      "tags": [
+        {
+          "name": "React"
+        },
+        {
+          "name": "Typescript"
+        },
+        {
+          "name": "Tailwind"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Utilizar o zod e react-hook-form",
+      "description": "O objetivo é configurar o projeto para usar o react-hook-form e o zod",
+      "status": "done",
+      "tags": [
+        {
+          "name": "Zod"
+        },
+        {
+          "name": "react-hook-form"
+        }
+      ]
+    },
+    {
+      "id": "4c7c",
+      "title": "New Card Title",
+      "description": "New Card Description",
+      "status": "doing",
+      "tags": [
+        {
+          "name": "New"
+        },
+        {
+          "name": "Card"
+        }
+      ]
+    }
+  ]
+}
