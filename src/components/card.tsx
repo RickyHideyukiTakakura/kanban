@@ -1,3 +1,5 @@
+import { DropdownMenuCard } from "./dropdown-menu-card";
+
 export interface CardProps {
   card: {
     id: string;
@@ -12,7 +14,11 @@ export interface CardProps {
 
 export function Card({ card }: CardProps) {
   return (
-    <div className="space-y-3 rounded-lg bg-white p-6 shadow-md">
+    <div className="relative space-y-3 rounded-lg bg-white p-6 shadow-md">
+      <div className="absolute -right-4 -top-4">
+        <DropdownMenuCard id={card.id} />
+      </div>
+
       <h3 className="text-sm font-bold text-slate-900">{card.title}</h3>
       <p className="line-clamp-2 text-sm font-medium text-slate-700">
         {card.description}

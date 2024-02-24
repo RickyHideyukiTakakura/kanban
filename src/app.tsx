@@ -9,10 +9,10 @@ import { queryClient } from "./lib/react-query";
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex bg-violet-700">
+      <div className="flex min-h-screen bg-violet-700">
         <Aside />
 
-        <main className="h-screen w-full space-y-8 rounded-tl-3xl bg-slate-100 px-14 pt-12">
+        <main className="w-full space-y-8 rounded-tl-3xl bg-slate-100 px-14 py-12">
           <Header />
 
           <Filter />

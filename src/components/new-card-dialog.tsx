@@ -19,12 +19,12 @@ export type NewCardSchema = z.infer<typeof newCardSchema>;
 export function NewCardDialog() {
   const [status, setStatus] = useState<CreateCardBody["status"]>("do");
 
-  const { handleSubmit, register } = useForm<NewCardSchema>({
+  const { handleSubmit, register, reset } = useForm<NewCardSchema>({
     resolver: zodResolver(newCardSchema),
     defaultValues: { title: "", description: "", status: "do", tags: "" },
   });
 
-  const { mutateAsync: createCardFn } = useMutation({
+  const { mutateAsync: createCardFn, isPending } = useMutation({
     mutationFn: createCard,
   });
 
@@ -39,6 +39,8 @@ export function NewCardDialog() {
       tags: tagsArray,
       status: status,
     });
+
+    reset();
   }
 
   return (
@@ -132,6 +134,7 @@ export function NewCardDialog() {
             <button
               form="newCardForm"
               type="submit"
+              disabled={isPending}
               className="flex h-10 w-full items-center justify-center rounded bg-violet-700 text-sm text-white hover:bg-violet-800"
             >
               Adicionar
