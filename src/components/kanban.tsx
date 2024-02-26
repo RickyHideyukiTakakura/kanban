@@ -1,5 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { GetCardsResponse, getCards } from "../api/get-cards";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useDrop } from "react-dnd";
+import { getCards } from "../api/get-cards";
+import {
+  UpdateStatusCardParams,
+  updateStatusCard,
+} from "../api/update-status-card";
 import { Card } from "./card";
 
 export type Status = "do" | "doing" | "done";
@@ -15,19 +20,42 @@ const statusMap: Record<Status, string> = {
 };
 
 export function Kanban({ status }: KanbanProps) {
-  const { data: cards } = useQuery<GetCardsResponse[]>({
+  const { mutateAsync: updateStatusCardFn } = useMutation({
+    mutationFn: updateStatusCard,
+  });
+
+  const { data: cards } = useQuery({
     queryKey: ["cards"],
     queryFn: getCards,
   });
 
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "TASK",
+    drop: (item: UpdateStatusCardParams) => {
+      updateStatusCardFn({ id: item.id, status });
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
+
   return (
-    <div className="space-y-6">
+    <div
+      className={`space-y-6 ${isOver ? "rounded bg-slate-200" : ""}`}
+      ref={drop}
+    >
       <h2 className="text-xl font-bold text-slate-900">{statusMap[status]}</h2>
 
       {cards &&
         cards.map(
           (card) =>
-            card.status === status && <Card key={card.id} card={card} />,
+            card.status === status && (
+              <Card
+                key={card.id}
+                card={card}
+                onDrop={() => updateStatusCardFn({ id: card.id, status })}
+              />
+            ),
         )}
     </div>
   );

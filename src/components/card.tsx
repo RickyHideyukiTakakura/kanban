@@ -1,3 +1,4 @@
+import { useDrag } from "react-dnd";
 import { DropdownMenuCard } from "./dropdown-menu-card";
 
 export interface CardProps {
@@ -10,11 +11,23 @@ export interface CardProps {
       name: string;
     }[];
   };
+  onDrop: () => void;
 }
 
-export function Card({ card }: CardProps) {
+export function Card({ card, onDrop }: CardProps) {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "TASK",
+    item: { id: card.id },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
   return (
-    <div className="relative space-y-3 rounded-lg bg-white p-6 shadow-md ">
+    <div
+      className={`relative space-y-3 rounded-lg bg-white p-6 shadow-md ${isDragging ? "opacity-50" : "opacity-100"}`}
+      ref={drag}
+    >
       <div className="absolute -right-4 -top-4">
         <DropdownMenuCard id={card.id} />
       </div>
