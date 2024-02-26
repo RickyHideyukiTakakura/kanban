@@ -14,7 +14,7 @@ export interface CardProps {
 
 export function Card({ card }: CardProps) {
   return (
-    <div className="relative space-y-3 rounded-lg bg-white p-6 shadow-md">
+    <div className="relative space-y-3 rounded-lg bg-white p-6 shadow-md ">
       <div className="absolute -right-4 -top-4">
         <DropdownMenuCard id={card.id} />
       </div>

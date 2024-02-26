@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { deleteCard } from "../api/delete-card";
+import { updateStatusCard } from "../api/update-status-card";
 
 export interface DropdownMenuCardProps {
   id: string;
@@ -18,6 +19,10 @@ export interface DropdownMenuCardProps {
 export function DropdownMenuCard({ id }: DropdownMenuCardProps) {
   const { mutateAsync: deleteCardFn } = useMutation({
     mutationFn: deleteCard,
+  });
+
+  const { mutateAsync: updateStatusCardFn } = useMutation({
+    mutationFn: updateStatusCard,
   });
 
   async function handleDeleteCard() {
@@ -53,17 +58,26 @@ export function DropdownMenuCard({ id }: DropdownMenuCardProps) {
           </DropdownMenu.SubTrigger>
 
           <DropdownMenu.SubContent className="z-50 w-40 space-y-1 rounded border bg-white p-1 shadow-md">
-            <DropdownMenu.Item className="flex w-full items-center justify-between gap-1 rounded-sm px-4 text-violet-900 hover:bg-red-200 hover:text-red-900">
+            <DropdownMenu.Item
+              className="flex w-full items-center justify-between gap-1 rounded-sm px-4 text-violet-900 hover:bg-red-200 hover:text-red-900"
+              onClick={() => updateStatusCardFn({ id, status: "do" })}
+            >
               A fazer
               <ListTodo className="h-4 w-4" />
             </DropdownMenu.Item>
 
-            <DropdownMenu.Item className="flex w-full items-center justify-between gap-1 rounded-sm px-4 text-violet-900 hover:bg-orange-200 hover:text-orange-900">
+            <DropdownMenu.Item
+              className="flex w-full items-center justify-between gap-1 rounded-sm px-4 text-violet-900 hover:bg-orange-200 hover:text-orange-900"
+              onClick={() => updateStatusCardFn({ id, status: "doing" })}
+            >
               Fazendo
               <Check className="h-4 w-4" />
             </DropdownMenu.Item>
 
-            <DropdownMenu.Item className="flex w-full items-center justify-between gap-1 rounded-sm px-4 text-violet-900 hover:bg-emerald-200 hover:text-emerald-900">
+            <DropdownMenu.Item
+              className="flex w-full items-center justify-between gap-1 rounded-sm px-4 text-violet-900 hover:bg-emerald-200 hover:text-emerald-900"
+              onClick={() => updateStatusCardFn({ id, status: "done" })}
+            >
               Feito
               <CheckCheck className="h-4 w-4" />
             </DropdownMenu.Item>
