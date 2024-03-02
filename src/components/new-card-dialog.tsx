@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CreateCardBody, createCard } from "../api/create-card";
+import { queryClient } from "../lib/react-query";
 
 const newCardSchema = z.object({
   title: z.string().min(1),
@@ -26,6 +27,9 @@ export function NewCardDialog() {
 
   const { mutateAsync: createCardFn, isPending } = useMutation({
     mutationFn: createCard,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cards"] });
+    },
   });
 
   async function handleCreateNewCard(data: NewCardSchema) {

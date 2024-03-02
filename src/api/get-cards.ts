@@ -1,6 +1,6 @@
 import { api } from "../lib/axios";
 
-export interface GetCardsResponse {
+export interface GetCardResponse {
   id: string;
   title: string;
   description: string;
@@ -11,7 +11,7 @@ export interface GetCardsResponse {
 }
 
 export async function getCards() {
-  const response = await api.get<GetCardsResponse[]>("/cards");
+  const response = await api.get<GetCardResponse[]>("/cards");
 
   return response.data;
 }

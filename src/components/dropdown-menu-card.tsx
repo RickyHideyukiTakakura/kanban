@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { deleteCard } from "../api/delete-card";
 import { updateStatusCard } from "../api/update-status-card";
+import { queryClient } from "../lib/react-query";
 
 export interface DropdownMenuCardProps {
   id: string;
@@ -19,10 +20,16 @@ export interface DropdownMenuCardProps {
 export function DropdownMenuCard({ id }: DropdownMenuCardProps) {
   const { mutateAsync: deleteCardFn } = useMutation({
     mutationFn: deleteCard,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cards"] });
+    },
   });
 
   const { mutateAsync: updateStatusCardFn } = useMutation({
     mutationFn: updateStatusCard,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cards"] });
+    },
   });
 
   async function handleDeleteCard() {

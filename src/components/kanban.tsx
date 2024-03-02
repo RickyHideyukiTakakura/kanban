@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDrop } from "react-dnd";
-import { getCards } from "../api/get-cards";
+import { GetCardResponse, getCards } from "../api/get-cards";
 import {
   UpdateStatusCardParams,
   updateStatusCard,
 } from "../api/update-status-card";
+import { queryClient } from "../lib/react-query";
 import { Card } from "./card";
 
 export type Status = "do" | "doing" | "done";
@@ -20,13 +21,32 @@ const statusMap: Record<Status, string> = {
 };
 
 export function Kanban({ status }: KanbanProps) {
-  const { mutateAsync: updateStatusCardFn } = useMutation({
-    mutationFn: updateStatusCard,
-  });
-
   const { data: cards } = useQuery({
     queryKey: ["cards"],
     queryFn: getCards,
+  });
+
+  function updateCardStatusCache({ id, status }: UpdateStatusCardParams) {
+    const cardsListCached = queryClient.getQueriesData<GetCardResponse>({
+      queryKey: ["cards"],
+    });
+
+    cardsListCached.forEach(([cacheKey, cacheData]) => {
+      if (!cacheData) {
+        return;
+      }
+
+      queryClient.setQueryData<GetCardResponse[]>(cacheKey, (cacheData) =>
+        cacheData?.map((card) => (card.id === id ? { ...card, status } : card)),
+      );
+    });
+  }
+
+  const { mutateAsync: updateStatusCardFn } = useMutation({
+    mutationFn: updateStatusCard,
+    async onSuccess(_, { id }) {
+      updateCardStatusCache({ id, status });
+    },
   });
 
   const [{ isOver }, drop] = useDrop(() => ({
